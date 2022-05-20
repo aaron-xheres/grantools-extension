@@ -9,6 +9,7 @@ QOL Tools for Granblue Fantasy built on Electron
 This extension will only READ data from Granblue Fantasy.
 Any controls is done only on the browser and not the game.
 
+
 That being said...
 
 This is a THIRD-PARTY TOOL and is not recommended to be used due to the EULA of Granblue Fantasy
