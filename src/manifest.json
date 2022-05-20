@@ -1,0 +1,37 @@
+{
+  "name": "Grantools",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "action": {
+    "default_icon": {
+      "32": "assets/icon32.png",
+      "64": "assets/icon64.png",
+      "128": "assets/icon128.png"
+    },
+    "default_title": "Grantools",
+    "default_popup": "popup/index.html"
+  },
+  "icons": {
+    "32": "assets/icon32.png",
+    "64": "assets/icon64.png",
+    "128": "assets/icon128.png"
+  },
+  "background": {
+    "service_worker": "background.ts"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://game.granbluefantasy.jp/*"],
+      "run_at": "document_end"
+    }
+  ],
+  "host_permissions": ["http://game.granbluefantasy.jp/*"],
+  "permissions": [
+    "background",
+    "clipboardRead",
+    "debugger",
+    "scripting",
+    "tabs",
+    "webNavigation"
+  ]
+}
