@@ -24,18 +24,15 @@ export default {
     if (warning.code === 'THIS_IS_UNDEFINED') return;
     defaultHandler(warning);
   },
-  // watch: { clearScreen: false }, // for dev debug
   plugins: [
+    vuePlugin({target: 'browser'}),
     typescript(),
     alias({
-      entries: {
-        ['@']: path.resolve(__dirname, 'src'),
-      },
+      resolve: ['.js', '.ts', '.vue'],
+      entries: [{find: '@', replacement: path.resolve(__dirname, 'src')}],
     }),
-    // chromeExtension() must be first, in order to properly treat manifest.json as the entry point
     chromeExtension(),
-    simpleReloader(), // Adds a Chrome extension reloader during watch mode
-    vuePlugin({target: 'browser'}),
+    simpleReloader(),
     replace({
       '__VUE_OPTIONS_API__': true,
       '__VUE_PROD_DEVTOOLS__': false,

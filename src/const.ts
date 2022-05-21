@@ -1,3 +1,8 @@
+export const ACTIONS = {
+  AUTO_REFRESH: 'AUTO_REFRESH',
+  REPEAT_STAGE: 'REPEAT_STAGE',
+};
+
 export const PAGE_TYPE = {
   NULL: '',
   HOME: 'HOME',

@@ -1,33 +1,43 @@
 <!-- TEMPLATE -->
 <template>
-  <div>
-    <button @click="helloFromExtension">Hello</button>
-  </div>
+  <n-config-provider :theme="darkTheme">
+    <actionsVue />
+    <settingsVue />
+  </n-config-provider>
 </template>
 <!-- TEMPLATE -->
 
 <!-- SCRIPT -->
 <script lang="ts">
-import {actionStore} from '@/stores/actionStores';
-import {dataStore} from '@/stores/dataStores';
+import {defineComponent} from 'vue';
+import {NConfigProvider, darkTheme} from 'naive-ui';
 
-import {helloFromExtension} from '@/functions';
+import actionsVue from '@/components/actions.vue';
+import settingsVue from '@/components/settings.vue';
 
-export default {
-  data() {
+export default defineComponent({
+  setup() {
     return {
-      actionStore,
-      dataStore,
+      darkTheme,
     };
   },
-  methods: {
-    helloFromExtension,
+  components: {
+    NConfigProvider,
+    actionsVue,
+    settingsVue,
   },
-  mounted() {},
-};
+});
 </script>
 <!-- SCRIPT -->
 
 <!-- STYLE -->
-<style></style>
+<style>
+.n-card {
+  width: 284px;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  margin: 8px;
+}
+</style>
 <!-- STYLE -->
