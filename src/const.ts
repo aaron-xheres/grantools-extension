@@ -1,6 +1,19 @@
-export const ACTIONS = {
-  AUTO_REFRESH: 'AUTO_REFRESH',
-  REPEAT_STAGE: 'REPEAT_STAGE',
+export const STORES = {
+  ACTIONS: 'actionsStore',
+  DATA: 'dataStore',
+};
+
+export const STORE_ACTIONS = {
+  autoRefresh: 'autoRefresh',
+  repeatStage: 'repeatStage',
+};
+
+export const STORE_DATA = {
+  currentPageType: 'currentPageType',
+  refreshAttack: 'refreshAttack',
+  refreshSummon: 'refreshSummon',
+  lastStartedStage: 'lastStartedStage',
+  repeatStageCounter: 'repeatStageCounter',
 };
 
 export const PAGE_TYPE = {

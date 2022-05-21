@@ -28,10 +28,7 @@ import {defineComponent} from 'vue';
 import {NButton, NCard, NIcon} from 'naive-ui';
 import {RefreshDot, Repeat} from '@vicons/tabler';
 
-import {actionStore} from '@/stores/actionStores';
-import {dataStore} from '@/stores/dataStores';
-
-import {helloFromExtension} from '@/functions';
+import {actionStore, dataStore, helloFromExtension} from '@/background';
 
 export default defineComponent({
   name: 'ActionsComponent',

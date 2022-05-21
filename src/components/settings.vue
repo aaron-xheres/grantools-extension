@@ -8,7 +8,11 @@
       pane-style="padding: 20px"
       justify-content="space-evenly"
     >
-      <n-tab-pane name="SETTINGS"> SETTINGS </n-tab-pane>
+      <n-tab-pane name="SETTINGS">
+        <n-button class="resetSettingsData" @click="resetStores"
+          >RESET SETTINGS DATA</n-button
+        >
+      </n-tab-pane>
     </n-tabs>
   </n-card>
 </template>
@@ -17,16 +21,21 @@
 <!-- SCRIPT -->
 <script lang="ts">
 import {defineComponent} from 'vue';
-import {NCard, NTabs, NTabPane} from 'naive-ui';
+import {NButton, NCard, NTabs, NTabPane} from 'naive-ui';
+
+import {resetStores} from '@/background';
 
 export default defineComponent({
   name: 'ActionsComponent',
   components: {
+    NButton,
     NCard,
     NTabs,
     NTabPane,
   },
-  methods: {},
+  methods: {
+    resetStores,
+  },
   mounted() {},
 });
 </script>
@@ -36,6 +45,9 @@ export default defineComponent({
 <style scoped>
 .n-tabs {
   width: 90vw;
+}
+.resetSettingsData {
+  left: 30px;
 }
 </style>
 <!-- STYLE -->
