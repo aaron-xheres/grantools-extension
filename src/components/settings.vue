@@ -46,7 +46,8 @@
                   Please ensure that this setting is turned ON before entering
                   the expedition page. <br /><br />
                   If the repeat is redirecting to the supporter page, keep this
-                  setting ON and enter the expedition page once
+                  setting ON and re-enter (refresh will not work) the expedition
+                  page once
                 </n-tooltip>
               </td>
               <td>
