@@ -148,11 +148,20 @@ const initNavigation = async () => {
   initNavigation();
 })();
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   if (message.msg === 'attachDebugger') {
+    await initTabs();
     initDebugger();
   }
 });
+
+const wait = (ms: number) => {
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
+};
 
 const execAction = async (dataType: string) => {
   await syncStore();
@@ -166,17 +175,21 @@ const execAction = async (dataType: string) => {
         (dataStore.refreshSummon && dataType.includes('summon_result'))
       ) {
         console.log('[ACTION] Auto Refresh');
+        await wait(100);
         chrome.scripting.executeScript({
           target: {tabId: tab[0].id},
           func: async () => {
-            setTimeout(() => {
-              history.back();
-              setTimeout(() => {
-                history.forward();
-              }, 300);
-            }, 100);
+            history.back();
           },
         });
+
+        await wait(500);
+        let url = tab[0].url as string;
+        while (!url.includes('#raid')) {
+          await wait(250);
+          url = tab[0].url as string;
+          history.forward();
+        }
       }
     }
   }
@@ -193,9 +206,4 @@ const execAction = async (dataType: string) => {
       chrome.tabs.update(tab[0].id, {url: dataStore.lastSelectedStage});
     }
   }
-
-  // Send message to sync stores
-  chrome.runtime.sendMessage({
-    msg: 'syncStore',
-  });
 };

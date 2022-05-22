@@ -9,6 +9,7 @@
       justify-content="space-evenly"
     >
       <n-tab-pane name="SETTINGS">
+        <h3 class="autoRefreshSettingsTitle">Auto Refresh</h3>
         <div class="settingsSection">
           <n-switch
             v-model:value="dataStore.refreshAttack"
@@ -87,6 +88,11 @@ export default defineComponent({
   flex-wrap: wrap;
   flex-direction: row;
   right: 20px;
+}
+.autoRefreshSettingsTitle {
+  margin-top: -10px;
+  margin-bottom: 5px;
+  margin-left: 65px;
 }
 </style>
 <!-- STYLE -->

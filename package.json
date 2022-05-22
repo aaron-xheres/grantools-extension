@@ -1,9 +1,9 @@
 {
-  "name": "sample-project",
-  "version": "1.0.0",
+  "name": "grantools",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rm -rf dist && rollup -c",
     "dev": "rollup -c -w",
     "prepare": "husky install"
   },

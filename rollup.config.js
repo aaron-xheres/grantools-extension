@@ -18,15 +18,15 @@ export default {
   output: {
     dir: 'dist',
     format: 'esm',
-    chunkFileNames: '[name]-[hash].js',
+    chunkFileNames: '[name].js',
   },
   onwarn: (warning, defaultHandler) => {
     if (warning.code === 'THIS_IS_UNDEFINED') return;
     defaultHandler(warning);
   },
   plugins: [
-    vuePlugin({target: 'browser'}),
     typescript(),
+    vuePlugin({target: 'browser'}),
     alias({
       resolve: ['.js', '.ts', '.vue'],
       entries: [{find: '@', replacement: path.resolve(__dirname, 'src')}],
