@@ -22,6 +22,7 @@ The developers are not liable for any damages caused to your account
 ## Features
 ```
 Auto Refresh
+  * Works with multi-battle raids
   - On Attacks
   - On Summons
 
