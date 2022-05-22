@@ -7,14 +7,14 @@ export class localStorage {
    * @param {string} dataKey
    * @return {Record<string, any>}
    */
-  static async getData(dataKey: string): Promise<Record<string, any>> {
+  static async getData(dataKey: string): Promise<any> {
     const data = chrome.storage.sync.get(dataKey);
     if (data) {
       return data;
     }
     else {
       console.error('[LOCAL STORAGE] Storage Key does not exist:', dataKey);
-      return {};
+      return null;
     }
   }
 

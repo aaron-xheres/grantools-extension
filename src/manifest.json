@@ -33,7 +33,6 @@
     "debugger",
     "scripting",
     "storage",
-    "tabs",
-    "webNavigation"
+    "tabs"
   ]
 }

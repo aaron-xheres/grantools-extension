@@ -1,51 +1,30 @@
-import {reactive} from 'vue';
-
 import * as CONST from '@/const';
 import localStorage from '@/localStorage';
-
-export const actionStore = reactive({
-  autoRefresh: false,
-  repeatStage: false,
-});
-
-export const dataStore = reactive({
-  currentPageType: CONST.PAGE_TYPE.NULL,
-  refreshAttack: true,
-  refreshSummon: false,
-  lastStartedStage: '',
-  repeatStageCounter: 0,
-});
+import {actionStore, dataStore, setStore, syncStore} from './stores';
 
 const initStores = async () => {
   const storage = await localStorage.getAllData();
   if (Object.keys(storage).length === 0) {
-    await localStorage.setData(CONST.STORE_ACTIONS.autoRefresh, false);
-    await localStorage.setData(CONST.STORE_ACTIONS.repeatStage, false);
-    await localStorage.setData(
-        CONST.STORE_DATA.currentPageType,
-        CONST.PAGE_TYPE.NULL,
-    );
-    await localStorage.setData(CONST.STORE_DATA.refreshAttack, true);
-    await localStorage.setData(CONST.STORE_DATA.refreshSummon, false);
-    await localStorage.setData(CONST.STORE_DATA.lastStartedStage, '');
-    await localStorage.setData(CONST.STORE_DATA.repeatStageCounter, 0);
+    setStore(CONST.STORE_ACTIONS.autoRefresh, false);
+    setStore(CONST.STORE_ACTIONS.repeatStage, false);
+    setStore(CONST.STORE_DATA.currentPageType, CONST.PAGE_TYPE.NULL);
+    setStore(CONST.STORE_DATA.refreshAttack, true);
+    setStore(CONST.STORE_DATA.refreshSummon, false);
+    setStore(CONST.STORE_DATA.lastSelectedStage, '');
+    setStore(CONST.STORE_DATA.repeatStageCounter, 0);
   }
 
-  actionStore.autoRefresh = storage.autoRefresh;
-  actionStore.repeatStage = storage.repeatStage;
-
-  dataStore.currentPageType = storage.currentPageType;
-  dataStore.refreshAttack = storage.refreshAttack;
-  dataStore.refreshSummon = storage.refreshSummon;
-  dataStore.lastStartedStage = storage.lastStartedStage;
-  dataStore.repeatStageCounter = storage.repeatStageCounter;
-
-  console.log('[CHROME STORAGE]', storage);
+  console.log('[CHROME STORE] ACTION STORE', actionStore);
+  console.log('[CHROME STORE] DATA STORE', dataStore);
 };
 
 let [tab]: any = [];
 const initTabs = async () => {
-  tab = await chrome.tabs.query({active: true, currentWindow: true});
+  tab = await chrome.tabs.query({
+    active: true,
+    currentWindow: true,
+    url: 'http://game.granbluefantasy.jp/*',
+  });
   console.log('[TAB DATA]', tab);
 };
 
@@ -70,116 +49,153 @@ const initDebugger = async () => {
       (source, method: string, params: any): void => {
         if (method === 'Network.responseReceived') {
           if (filter.some((url) => params.response.url.includes(url))) {
-            try {
-              helloFromExtension();
-              chrome.debugger.sendCommand(
-                  debuggee,
-                  'Network.getResponseBody',
-                  {requestId: params.requestId},
-                  (result) => {
-                    const dataType: string = params.response.url.includes('.json?') ?
-                  params.response.url.split('/').pop().split('.').shift() :
-                  'reward';
-                    console.log('[NETWORK DATA]', dataType);
-                  },
-              );
-            }
-            catch (err) {}
+            const dataType: string = params.response.url.includes('.json?') ?
+            params.response.url.split('/').pop().split('.').shift() :
+            'reward';
+
+            execAction(dataType);
           }
         }
       },
   );
 };
 
-(async () => {
-  await initStores();
-  await initTabs();
-  await initDebugger();
-})();
+const initNavigation = async () => {
+  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (
+      changeInfo.url &&
+      changeInfo.url.includes('http://game.granbluefantasy.jp/')
+    ) {
+      // Home Page
+      if (
+        changeInfo.url.includes('#mypage') &&
+        dataStore.currentPageType !== CONST.PAGE_TYPE.HOME
+      ) {
+        setStore(CONST.STORE_DATA.currentPageType, CONST.PAGE_TYPE.HOME, true);
+      }
 
-const setStore = async (dataKey: string, dataValue: any, log?: boolean) => {
-  switch (dataKey) {
-    case CONST.STORE_ACTIONS.autoRefresh:
-      actionStore.autoRefresh = dataValue;
-      await localStorage.setData(
-          CONST.STORE_ACTIONS.autoRefresh,
-          dataValue,
-          log,
-      );
-      break;
-    case CONST.STORE_ACTIONS.repeatStage:
-      actionStore.repeatStage = dataValue;
-      await localStorage.setData(
-          CONST.STORE_ACTIONS.repeatStage,
-          dataValue,
-          log,
-      );
-      break;
-    case CONST.STORE_DATA.currentPageType:
-      dataStore.currentPageType = dataValue;
-      await localStorage.setData(
-          CONST.STORE_DATA.currentPageType,
-          dataValue,
-          log,
-      );
-      break;
-    case CONST.STORE_DATA.refreshAttack:
-      dataStore.refreshAttack = dataValue;
-      await localStorage.setData(
-          CONST.STORE_DATA.refreshAttack,
-          dataValue,
-          log,
-      );
-      break;
-    case CONST.STORE_DATA.refreshSummon:
-      dataStore.refreshSummon = dataValue;
-      await localStorage.setData(
-          CONST.STORE_DATA.refreshSummon,
-          dataValue,
-          log,
-      );
-      break;
-    case CONST.STORE_DATA.lastStartedStage:
-      dataStore.lastStartedStage = dataValue;
-      await localStorage.setData(
-          CONST.STORE_DATA.lastStartedStage,
-          dataValue,
-          log,
-      );
-      break;
-    case CONST.STORE_DATA.repeatStageCounter:
-      dataStore.repeatStageCounter = dataValue;
-      await localStorage.setData(
-          CONST.STORE_DATA.repeatStageCounter,
-          dataValue,
-          log,
-      );
-      break;
-  }
-};
+      // Quest Page
+      if (
+        changeInfo.url.includes('#quest/index') ||
+        (changeInfo.url.includes('#quest/extra') &&
+          dataStore.currentPageType !== CONST.PAGE_TYPE.QUEST)
+      ) {
+        setStore(CONST.STORE_DATA.currentPageType, CONST.PAGE_TYPE.QUEST, true);
+      }
 
-export const helloFromExtension = async () => {
-  setStore(CONST.STORE_ACTIONS.autoRefresh, !actionStore.autoRefresh, true);
-  setStore(
-      CONST.STORE_DATA.repeatStageCounter,
-      dataStore.repeatStageCounter + 1,
-      true,
-  );
-  chrome.scripting.executeScript({
-    target: {tabId: tab[0].id},
-    func: () => {
-      console.log('hello from extension');
-    },
+      // Raid Assist
+      if (
+        changeInfo.url.includes('#quest/assist') &&
+        dataStore.currentPageType !== CONST.PAGE_TYPE.QUEST
+      ) {
+        setStore(
+            CONST.STORE_DATA.currentPageType,
+            CONST.PAGE_TYPE.ASSIST,
+            true,
+        );
+      }
+
+      // Support Summon Select
+      if (
+        changeInfo.url.includes('/supporter') &&
+        dataStore.currentPageType !== CONST.PAGE_TYPE.SUPPORTER
+      ) {
+        setStore(
+            CONST.STORE_DATA.currentPageType,
+            CONST.PAGE_TYPE.SUPPORTER,
+            true,
+        );
+        if (
+          !changeInfo.url.includes('_raid') &&
+          changeInfo.url !== dataStore.lastSelectedStage
+        ) {
+          setStore(CONST.STORE_DATA.lastSelectedStage, changeInfo.url, true);
+          setStore(CONST.STORE_DATA.repeatStageCounter, 0, true);
+        }
+        else if (changeInfo.url.includes('_raid')) {
+          setStore(CONST.STORE_DATA.lastSelectedStage, '', true);
+          setStore(CONST.STORE_DATA.repeatStageCounter, 0, true);
+        }
+      }
+
+      // Battle
+      if (
+        changeInfo.url.includes('#raid') &&
+        dataStore.currentPageType !== CONST.PAGE_TYPE.RAID
+      ) {
+        setStore(CONST.STORE_DATA.currentPageType, CONST.PAGE_TYPE.RAID, true);
+      }
+
+      // Result
+      if (
+        changeInfo.url.includes('#result') &&
+        dataStore.currentPageType !== CONST.PAGE_TYPE.RESULT
+      ) {
+        setStore(
+            CONST.STORE_DATA.currentPageType,
+            CONST.PAGE_TYPE.RESULT,
+            true,
+        );
+      }
+    }
   });
 };
 
-export const resetStores = async () => {
-  setStore(CONST.STORE_ACTIONS.autoRefresh, false);
-  setStore(CONST.STORE_ACTIONS.repeatStage, false);
-  setStore(CONST.STORE_DATA.currentPageType, CONST.PAGE_TYPE.NULL);
-  setStore(CONST.STORE_DATA.refreshAttack, true);
-  setStore(CONST.STORE_DATA.refreshSummon, false);
-  setStore(CONST.STORE_DATA.lastStartedStage, '');
-  setStore(CONST.STORE_DATA.repeatStageCounter, 0);
-  console.warn('[STORES] RESET STORE');
+(async () => {
+  await initTabs();
+  await initStores();
+  initDebugger();
+  initNavigation();
+})();
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.msg === 'attachDebugger') {
+    initDebugger();
+  }
+});
+
+const execAction = async (dataType: string) => {
+  await syncStore();
+
+  // Attack / Summon
+  if (dataType.includes('_result')) {
+    if (actionStore.autoRefresh) {
+      if (
+        (dataStore.refreshAttack &&
+          dataType.includes('normal_attack_result')) ||
+        (dataStore.refreshSummon && dataType.includes('summon_result'))
+      ) {
+        console.log('[ACTION] Auto Refresh');
+        chrome.scripting.executeScript({
+          target: {tabId: tab[0].id},
+          func: async () => {
+            setTimeout(() => {
+              history.back();
+              setTimeout(() => {
+                history.forward();
+              }, 300);
+            }, 100);
+          },
+        });
+      }
+    }
+  }
+
+  // Reward Screen
+  else if (dataType === 'reward') {
+    if (actionStore.repeatStage && dataStore.lastSelectedStage !== '') {
+      console.log('[ACTION] Repeat Stage');
+      setStore(
+          CONST.STORE_DATA.repeatStageCounter,
+          dataStore.repeatStageCounter + 1,
+          true,
+      );
+      chrome.tabs.update(tab[0].id, {url: dataStore.lastSelectedStage});
+    }
+  }
+
+  // Send message to sync stores
+  chrome.runtime.sendMessage({
+    msg: 'syncStore',
+  });
 };

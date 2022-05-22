@@ -2,14 +2,14 @@
 <template>
   <n-card>
     <div class="button">
-      <n-button @click="helloFromExtension" text style="font-size: 40px">
+      <n-button @click="toggleAutoRefresh" text style="font-size: 40px">
         <n-icon :color="actionStore.autoRefresh ? '#00a2e3' : '#7a8593'">
           <RefreshDot />
         </n-icon>
       </n-button>
     </div>
     <div class="button">
-      <n-button @click="helloFromExtension" text style="font-size: 40px">
+      <n-button @click="toggleRepeatStage" text style="font-size: 40px">
         <n-icon :color="actionStore.repeatStage ? '#00a2e3' : '#7a8593'">
           <Repeat />
         </n-icon>
@@ -28,7 +28,8 @@ import {defineComponent} from 'vue';
 import {NButton, NCard, NIcon} from 'naive-ui';
 import {RefreshDot, Repeat} from '@vicons/tabler';
 
-import {actionStore, dataStore, helloFromExtension} from '@/background';
+import * as CONST from '@/const';
+import {actionStore, dataStore, setStore} from '@/stores';
 
 export default defineComponent({
   name: 'ActionsComponent',
@@ -46,9 +47,13 @@ export default defineComponent({
     };
   },
   methods: {
-    helloFromExtension,
+    toggleAutoRefresh() {
+      setStore(CONST.STORE_ACTIONS.autoRefresh, !actionStore.autoRefresh, true);
+    },
+    toggleRepeatStage() {
+      setStore(CONST.STORE_ACTIONS.repeatStage, !actionStore.repeatStage, true);
+    },
   },
-  mounted() {},
 });
 </script>
 <!-- SCRIPT -->

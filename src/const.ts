@@ -12,7 +12,7 @@ export const STORE_DATA = {
   currentPageType: 'currentPageType',
   refreshAttack: 'refreshAttack',
   refreshSummon: 'refreshSummon',
-  lastStartedStage: 'lastStartedStage',
+  lastSelectedStage: 'lastSelectedStage',
   repeatStageCounter: 'repeatStageCounter',
 };
 
@@ -20,6 +20,7 @@ export const PAGE_TYPE = {
   NULL: '',
   HOME: 'HOME',
   QUEST: 'QUEST',
+  ASSIST: 'ASSIST',
   SUPPORTER: 'SUPPORTER',
   RAID: 'RAID',
   RESULT: 'RESULT',

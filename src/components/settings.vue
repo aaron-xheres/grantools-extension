@@ -9,9 +9,29 @@
       justify-content="space-evenly"
     >
       <n-tab-pane name="SETTINGS">
-        <n-button class="resetSettingsData" @click="resetStores"
-          >RESET SETTINGS DATA</n-button
-        >
+        <div class="settingsSection">
+          <n-switch
+            v-model:value="dataStore.refreshAttack"
+            v-bind:disabled="!actionStore.autoRefresh"
+            @update:value="toggleRefreshAttack"
+          >
+            <template #checked> Attacks </template>
+            <template #unchecked> Attacks </template>
+          </n-switch>
+          <n-switch
+            v-model:value="dataStore.refreshSummon"
+            v-bind:disabled="!actionStore.autoRefresh"
+            @update:value="toggleRefreshSummon"
+          >
+            <template #checked> Summons </template>
+            <template #unchecked> Summons </template>
+          </n-switch>
+        </div>
+      </n-tab-pane>
+      <n-tab-pane name="RESET">
+        <div class="settingsSection">
+          <n-button @click="resetStores">RESET SETTINGS DATA</n-button>
+        </div>
       </n-tab-pane>
     </n-tabs>
   </n-card>
@@ -21,22 +41,35 @@
 <!-- SCRIPT -->
 <script lang="ts">
 import {defineComponent} from 'vue';
-import {NButton, NCard, NTabs, NTabPane} from 'naive-ui';
+import {NButton, NCard, NSwitch, NTabs, NTabPane} from 'naive-ui';
 
-import {resetStores} from '@/background';
+import * as CONST from '@/const';
+import {actionStore, dataStore, setStore, resetStores} from '@/stores';
 
 export default defineComponent({
-  name: 'ActionsComponent',
+  name: 'SettingsComponent',
   components: {
     NButton,
     NCard,
+    NSwitch,
     NTabs,
     NTabPane,
   },
+  data() {
+    return {
+      actionStore,
+      dataStore,
+    };
+  },
   methods: {
     resetStores,
+    toggleRefreshAttack(value: boolean) {
+      setStore(CONST.STORE_DATA.refreshAttack, value, true);
+    },
+    toggleRefreshSummon(value: boolean) {
+      setStore(CONST.STORE_DATA.refreshSummon, value, true);
+    },
   },
-  mounted() {},
 });
 </script>
 <!-- SCRIPT -->
@@ -46,8 +79,14 @@ export default defineComponent({
 .n-tabs {
   width: 90vw;
 }
-.resetSettingsData {
-  left: 30px;
+.settingsSection {
+  display: flex;
+  position: relative;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  right: 20px;
 }
 </style>
 <!-- STYLE -->

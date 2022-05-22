@@ -1,6 +1,7 @@
 <!-- TEMPLATE -->
 <template>
   <n-config-provider :theme="darkTheme">
+    <statusVue />
     <actionsVue />
     <settingsVue />
   </n-config-provider>
@@ -12,6 +13,7 @@
 import {defineComponent} from 'vue';
 import {NConfigProvider, darkTheme} from 'naive-ui';
 
+import statusVue from '@/components/status.vue';
 import actionsVue from '@/components/actions.vue';
 import settingsVue from '@/components/settings.vue';
 
@@ -23,6 +25,7 @@ export default defineComponent({
   },
   components: {
     NConfigProvider,
+    statusVue,
     actionsVue,
     settingsVue,
   },
