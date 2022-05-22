@@ -2,6 +2,17 @@
 
 QOL Tools for Granblue Fantasy built on Electron
 
+## Features
+```
+Auto Refresh
+  - On Attacks
+  - On Summons
+
+Repeat Stage
+  - Repeat Counter
+  - Redirects to Support Summon Page
+  - Replicard Expedition redirect (instead of support summon)
+```
 
 ## Disclaimer
 
