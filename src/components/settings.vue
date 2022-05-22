@@ -1,38 +1,67 @@
 <!-- TEMPLATE -->
 <template>
-  <n-card content-style="padding: 0;">
+  <n-card content-style="padding: 5px;">
     <n-tabs
-      type="line"
       size="medium"
       :tabs-padding="20"
       pane-style="padding: 20px"
       justify-content="space-evenly"
     >
       <n-tab-pane name="SETTINGS">
-        <h3 class="autoRefreshSettingsTitle">Auto Refresh</h3>
-        <div class="settingsSection">
-          <n-switch
-            v-model:value="dataStore.refreshAttack"
-            v-bind:disabled="!actionStore.autoRefresh"
-            @update:value="toggleRefreshAttack"
-          >
-            <template #checked> Attacks </template>
-            <template #unchecked> Attacks </template>
-          </n-switch>
-          <n-switch
-            v-model:value="dataStore.refreshSummon"
-            v-bind:disabled="!actionStore.autoRefresh"
-            @update:value="toggleRefreshSummon"
-          >
-            <template #checked> Summons </template>
-            <template #unchecked> Summons </template>
-          </n-switch>
-        </div>
+        <h3 class="settingsCategory">Auto Refresh</h3>
+        <n-card class="settingsCard" content-style="padding: 5px;">
+          <table>
+            <tr>
+              <td><h4 class="switchTitle">Attack</h4></td>
+              <td>
+                <n-switch
+                  v-model:value="dataStore.refreshAttack"
+                  v-bind:disabled="!actionStore.autoRefresh"
+                  @update:value="toggleRefreshAttack"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td><h4 class="switchTitle">Summon</h4></td>
+              <td>
+                <n-switch
+                  v-model:value="dataStore.refreshSummon"
+                  v-bind:disabled="!actionStore.autoRefresh"
+                  @update:value="toggleRefreshSummon"
+                />
+              </td>
+            </tr>
+          </table>
+        </n-card>
+
+        <h3 class="settingsCategory">Repeat Stage</h3>
+        <n-card class="settingsCard" content-style="padding: 5px;">
+          <table>
+            <tr>
+              <td>
+                <n-tooltip trigger="hover" style="max-width: 200px">
+                  <template #trigger>
+                    <h4 class="switchTitle">Replicard Expedition</h4>
+                  </template>
+                  Please ensure that this setting is turned ON before entering
+                  the expedition page. <br /><br />
+                  If the repeat is redirecting to the supporter page, keep this
+                  setting ON and enter the expedition page once
+                </n-tooltip>
+              </td>
+              <td>
+                <n-switch
+                  v-model:value="dataStore.replicardExpedition"
+                  v-bind:disabled="!actionStore.repeatStage"
+                  @update:value="toggleReplicardExpedition"
+                />
+              </td>
+            </tr>
+          </table>
+        </n-card>
       </n-tab-pane>
       <n-tab-pane name="RESET">
-        <div class="settingsSection">
-          <n-button @click="resetStores">RESET SETTINGS DATA</n-button>
-        </div>
+        <n-button @click="resetStores">RESET SETTINGS DATA</n-button>
       </n-tab-pane>
     </n-tabs>
   </n-card>
@@ -42,7 +71,7 @@
 <!-- SCRIPT -->
 <script lang="ts">
 import {defineComponent} from 'vue';
-import {NButton, NCard, NSwitch, NTabs, NTabPane} from 'naive-ui';
+import {NButton, NCard, NSwitch, NTabs, NTabPane, NTooltip} from 'naive-ui';
 
 import * as CONST from '@/const';
 import {actionStore, dataStore, setStore, resetStores} from '@/stores';
@@ -55,6 +84,7 @@ export default defineComponent({
     NSwitch,
     NTabs,
     NTabPane,
+    NTooltip,
   },
   data() {
     return {
@@ -70,6 +100,9 @@ export default defineComponent({
     toggleRefreshSummon(value: boolean) {
       setStore(CONST.STORE_DATA.refreshSummon, value, true);
     },
+    toggleReplicardExpedition(value: boolean) {
+      setStore(CONST.STORE_DATA.replicardExpedition, value, true);
+    },
   },
 });
 </script>
@@ -77,22 +110,26 @@ export default defineComponent({
 
 <!-- STYLE -->
 <style scoped>
-.n-tabs {
-  width: 90vw;
+.settingsCategory {
+  margin: 0px;
 }
-.settingsSection {
+.settingsCard {
+  width: 268px;
+  padding: 0px;
+}
+.setting {
+  margin: 2px;
+}
+.switchTitle {
+  float: left;
+  margin: 0px;
+  margin-right: 10px;
+}
+.n-tab-pane {
+  width: 284px;
   display: flex;
-  position: relative;
-  justify-content: space-evenly;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
-  flex-direction: row;
-  right: 20px;
-}
-.autoRefreshSettingsTitle {
-  margin-top: -10px;
-  margin-bottom: 5px;
-  margin-left: 65px;
 }
 </style>
 <!-- STYLE -->

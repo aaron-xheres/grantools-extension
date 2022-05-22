@@ -12,6 +12,7 @@ export const STORE_DATA = {
   currentPageType: 'currentPageType',
   refreshAttack: 'refreshAttack',
   refreshSummon: 'refreshSummon',
+  replicardExpedition: 'replicardExpedition',
   lastSelectedStage: 'lastSelectedStage',
   repeatStageCounter: 'repeatStageCounter',
 };
@@ -21,6 +22,7 @@ export const PAGE_TYPE = {
   HOME: 'HOME',
   QUEST: 'QUEST',
   ASSIST: 'ASSIST',
+  REPLICARD_STAGE: 'REPLICARD_STAGE',
   SUPPORTER: 'SUPPORTER',
   RAID: 'RAID',
   RESULT: 'RESULT',

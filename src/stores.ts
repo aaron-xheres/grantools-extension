@@ -12,6 +12,7 @@ export const dataStore = reactive({
   currentPageType: CONST.PAGE_TYPE.NULL,
   refreshAttack: true,
   refreshSummon: false,
+  replicardExpedition: false,
   lastSelectedStage: '',
   repeatStageCounter: 0,
 });
@@ -35,15 +36,10 @@ export const syncStore = async (): Promise<any> => {
   dataStore.currentPageType = storage.currentPageType;
   dataStore.refreshAttack = storage.refreshAttack;
   dataStore.refreshSummon = storage.refreshSummon;
+  dataStore.replicardExpedition = storage.replicardExpedition;
   dataStore.lastSelectedStage = storage.lastSelectedStage;
   dataStore.repeatStageCounter = storage.repeatStageCounter;
 };
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.msg === 'syncStore') {
-    syncStore();
-  }
-});
 
 syncStore();
 export const setStore = async (
@@ -88,6 +84,14 @@ export const setStore = async (
       dataStore.refreshSummon = dataValue;
       await localStorage.setData(
           CONST.STORE_DATA.refreshSummon,
+          dataValue,
+          log,
+      );
+      break;
+    case CONST.STORE_DATA.replicardExpedition:
+      dataStore.replicardExpedition = dataValue;
+      await localStorage.setData(
+          CONST.STORE_DATA.replicardExpedition,
           dataValue,
           log,
       );

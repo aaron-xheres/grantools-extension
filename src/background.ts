@@ -10,6 +10,7 @@ const initStores = async () => {
     setStore(CONST.STORE_DATA.currentPageType, CONST.PAGE_TYPE.NULL);
     setStore(CONST.STORE_DATA.refreshAttack, true);
     setStore(CONST.STORE_DATA.refreshSummon, false);
+    setStore(CONST.STORE_DATA.replicardExpedition, false);
     setStore(CONST.STORE_DATA.lastSelectedStage, '');
     setStore(CONST.STORE_DATA.repeatStageCounter, 0);
   }
@@ -106,6 +107,12 @@ const initNavigation = async () => {
             true,
         );
         if (
+          changeInfo.url.includes('#replicard') &&
+          dataStore.replicardExpedition
+        ) {
+          // Do nothing
+        }
+        else if (
           !changeInfo.url.includes('_raid') &&
           changeInfo.url !== dataStore.lastSelectedStage
         ) {
@@ -115,6 +122,20 @@ const initNavigation = async () => {
         else if (changeInfo.url.includes('_raid')) {
           setStore(CONST.STORE_DATA.lastSelectedStage, '', true);
           setStore(CONST.STORE_DATA.repeatStageCounter, 0, true);
+        }
+      }
+
+      if (
+        changeInfo.url.includes('#replicard/stage') &&
+        dataStore.currentPageType !== CONST.PAGE_TYPE.REPLICARD_STAGE
+      ) {
+        setStore(
+            CONST.STORE_DATA.currentPageType,
+            CONST.PAGE_TYPE.REPLICARD_STAGE,
+            true,
+        );
+        if (dataStore.replicardExpedition) {
+          setStore(CONST.STORE_DATA.lastSelectedStage, changeInfo.url, true);
         }
       }
 
@@ -183,12 +204,17 @@ const execAction = async (dataType: string) => {
           },
         });
 
-        await wait(500);
+        await wait(250);
         let url = tab[0].url as string;
         while (!url.includes('#raid')) {
           await wait(250);
           url = tab[0].url as string;
-          history.forward();
+          chrome.scripting.executeScript({
+            target: {tabId: tab[0].id},
+            func: async () => {
+              history.forward();
+            },
+          });
         }
       }
     }

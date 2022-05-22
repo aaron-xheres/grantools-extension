@@ -18,7 +18,7 @@ export default {
   output: {
     dir: 'dist',
     format: 'esm',
-    chunkFileNames: '[name].js',
+    chunkFileNames: '[name]-[hash].js',
   },
   onwarn: (warning, defaultHandler) => {
     if (warning.code === 'THIS_IS_UNDEFINED') return;
