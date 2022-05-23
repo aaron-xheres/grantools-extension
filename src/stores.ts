@@ -18,7 +18,7 @@ export const dataStore = reactive({
 });
 
 // Sync Stores on page change
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab): void => {
   if (
     changeInfo.url &&
     changeInfo.url.includes('http://game.granbluefantasy.jp/')
@@ -46,7 +46,7 @@ export const setStore = async (
     dataKey: string,
     dataValue: any,
     log?: boolean,
-) => {
+): Promise<void> => {
   switch (dataKey) {
     case CONST.STORE_ACTIONS.autoRefresh:
       actionStore.autoRefresh = dataValue;
@@ -117,7 +117,7 @@ export const setStore = async (
   syncStore();
 };
 
-export const resetStores = async () => {
+export const resetStores = async (): Promise<void> => {
   setStore(CONST.STORE_ACTIONS.autoRefresh, false);
   setStore(CONST.STORE_ACTIONS.repeatStage, false);
   setStore(CONST.STORE_DATA.currentPageType, CONST.PAGE_TYPE.NULL);

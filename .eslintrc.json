@@ -16,9 +16,11 @@
         "vue",
         "@typescript-eslint"
     ],
+    "ignorePatterns": ["*.png"],
     "rules": {
         "max-len": ["error", { "code": 160 }],
         "brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
-        "vue/no-v-model-argument": "off"
+        "vue/no-v-model-argument": "off",
+        "vue/comment-directive": "off"
     }
 }

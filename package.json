@@ -51,7 +51,7 @@
     "typescript": "^4.4.3"
   },
   "lint-staged": {
-    "*.{vue,js,jsx,cjs,mjs,ts,tsx,cts,mts}": "eslint --fix",
-    "*.{vue,js,jsx,cjs,mjs,ts,tsx,css,md}": "prettier --write"
+    "*.{vue,js,jsx,cjs,mjs,ts,tsx,css,md}": "prettier --write",
+    "*.{vue,js,jsx,cjs,mjs,ts,tsx,cts,mts}": "eslint --fix"
   }
 }

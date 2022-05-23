@@ -18,7 +18,7 @@ export default defineComponent({
     NCard,
   },
   methods: {
-    attachDebugger: () => {
+    attachDebugger: (): void => {
       chrome.runtime.sendMessage({msg: 'attachDebugger'});
     },
   },

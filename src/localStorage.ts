@@ -44,7 +44,7 @@ export class localStorage {
   /**
    * Get all Storage Data
    */
-  static async getAllData() {
+  static async getAllData(): Promise<Record<string, any>> {
     return chrome.storage.sync.get(null);
   }
 }

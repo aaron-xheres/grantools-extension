@@ -2,7 +2,7 @@ import * as CONST from '@/const';
 import localStorage from '@/localStorage';
 import {actionStore, dataStore, setStore, syncStore} from './stores';
 
-const initStores = async () => {
+const initStores = async (): Promise<void> => {
   const storage = await localStorage.getAllData();
   if (Object.keys(storage).length === 0) {
     setStore(CONST.STORE_ACTIONS.autoRefresh, false);
@@ -19,8 +19,8 @@ const initStores = async () => {
   console.log('[CHROME STORE] DATA STORE', dataStore);
 };
 
-let [tab]: any = [];
-const initTabs = async () => {
+let tab: chrome.tabs.Tab[];
+const initTabs = async (): Promise<void> => {
   tab = await chrome.tabs.query({
     active: true,
     currentWindow: true,
@@ -29,7 +29,7 @@ const initTabs = async () => {
   console.log('[TAB DATA]', tab);
 };
 
-const initDebugger = async () => {
+const initDebugger = async (): Promise<void> => {
   const debuggee = {tabId: tab[0].id};
   const filter = [
     '_result.json',
@@ -61,8 +61,8 @@ const initDebugger = async () => {
   );
 };
 
-const initNavigation = async () => {
-  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+const initNavigation = async (): Promise<void> => {
+  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab): void => {
     if (
       changeInfo.url &&
       changeInfo.url.includes('http://game.granbluefantasy.jp/')
@@ -162,21 +162,23 @@ const initNavigation = async () => {
   });
 };
 
-(async () => {
+(async (): Promise<void> => {
   await initTabs();
   await initStores();
   initDebugger();
   initNavigation();
 })();
 
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-  if (message.msg === 'attachDebugger') {
-    await initTabs();
-    initDebugger();
-  }
-});
+chrome.runtime.onMessage.addListener(
+    async (message, sender, sendResponse): Promise<void> => {
+      if (message.msg === 'attachDebugger') {
+        await initTabs();
+        initDebugger();
+      }
+    },
+);
 
-const wait = (ms: number) => {
+const wait = (ms: number): Promise<void> => {
   return new Promise<void>((resolve) => {
     setTimeout(() => {
       resolve();
@@ -184,7 +186,7 @@ const wait = (ms: number) => {
   });
 };
 
-const execAction = async (dataType: string) => {
+const execAction = async (dataType: string): Promise<void> => {
   await syncStore();
 
   // Attack / Summon
@@ -203,7 +205,7 @@ const execAction = async (dataType: string) => {
 
         await wait(100);
         chrome.scripting.executeScript({
-          target: {tabId: tab[0].id},
+          target: {tabId: tab[0].id!},
           func: async () => {
             history.back();
           },
@@ -214,7 +216,7 @@ const execAction = async (dataType: string) => {
           await wait(250);
           url = tab[0].url as string;
           chrome.scripting.executeScript({
-            target: {tabId: tab[0].id},
+            target: {tabId: tab[0].id!},
             func: async () => {
               history.forward();
             },
@@ -233,7 +235,7 @@ const execAction = async (dataType: string) => {
           dataStore.repeatStageCounter + 1,
           true,
       );
-      chrome.tabs.update(tab[0].id, {url: dataStore.lastSelectedStage});
+      chrome.tabs.update(tab[0].id!, {url: dataStore.lastSelectedStage});
     }
   }
 };

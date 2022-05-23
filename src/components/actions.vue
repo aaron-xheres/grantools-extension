@@ -47,10 +47,10 @@ export default defineComponent({
     };
   },
   methods: {
-    toggleAutoRefresh() {
+    toggleAutoRefresh(): void {
       setStore(CONST.STORE_ACTIONS.autoRefresh, !actionStore.autoRefresh, true);
     },
-    toggleRepeatStage() {
+    toggleRepeatStage(): void {
       setStore(CONST.STORE_ACTIONS.repeatStage, !actionStore.repeatStage, true);
     },
   },
