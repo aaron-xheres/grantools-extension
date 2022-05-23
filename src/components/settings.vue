@@ -4,7 +4,7 @@
     <n-tabs
       size="medium"
       :tabs-padding="20"
-      pane-style="padding: 20px"
+      pane-style="padding: 20px; padding-bottom: 0px;"
       justify-content="space-evenly"
     >
       <n-tab-pane name="SETTINGS">
@@ -33,7 +33,7 @@
             </tr>
           </table>
         </n-card>
-
+        <br style="margin-top: 10px; content: ' '" />
         <h3 class="settingsCategory">Repeat Stage</h3>
         <n-card class="settingsCard" content-style="padding: 5px;">
           <table>
@@ -62,7 +62,9 @@
         </n-card>
       </n-tab-pane>
       <n-tab-pane name="RESET">
-        <n-button @click="resetStores">RESET SETTINGS DATA</n-button>
+        <n-button @click="resetStores" class="btnReset"
+          >RESET SETTINGS DATA</n-button
+        >
       </n-tab-pane>
     </n-tabs>
   </n-card>
@@ -125,6 +127,9 @@ export default defineComponent({
   float: left;
   margin: 0px;
   margin-right: 10px;
+}
+.btnReset {
+  margin-bottom: 15px;
 }
 .n-tab-pane {
   width: 284px;
