@@ -198,7 +198,7 @@ const execAction = async (dataType: string) => {
         console.log('[ACTION] Auto Refresh');
 
         let url = tab[0].url as string;
-        let waitDelay = 500;
+        let waitDelay = 1000;
         if (url.includes('_multi')) waitDelay = 250;
 
         await wait(100);
