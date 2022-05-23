@@ -196,6 +196,11 @@ const execAction = async (dataType: string) => {
         (dataStore.refreshSummon && dataType.includes('summon_result'))
       ) {
         console.log('[ACTION] Auto Refresh');
+
+        let url = tab[0].url as string;
+        let waitDelay = 500;
+        if (url.includes('_multi')) waitDelay = 250;
+
         await wait(100);
         chrome.scripting.executeScript({
           target: {tabId: tab[0].id},
@@ -204,8 +209,7 @@ const execAction = async (dataType: string) => {
           },
         });
 
-        await wait(250);
-        let url = tab[0].url as string;
+        await wait(waitDelay);
         while (!url.includes('#raid')) {
           await wait(250);
           url = tab[0].url as string;
