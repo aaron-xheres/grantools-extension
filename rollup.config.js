@@ -22,6 +22,7 @@ export default {
   },
   onwarn: (warning, defaultHandler) => {
     if (warning.code === 'THIS_IS_UNDEFINED') return;
+    if (warning.code === 'CIRCULAR_DEPENDENCY') return;
     defaultHandler(warning);
   },
   plugins: [
