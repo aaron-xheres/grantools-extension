@@ -18,13 +18,20 @@ Your account may be BANNED from using Grantools
 The developers are not liable for any damages caused to your account
 ```
 
+## Todo / Ideas
+```
+[] Use WebRequests instead of Debugger?
+   - Since I only need to read the sending header
+```
+
+
 ## Features
 
 ```
 Auto Refresh
   * Works with multi-battle raids
-  - On Attacks
-  - On Summons
+  - Auto Refreshes on Attack
+  - Auto Refreshes on Summons
 
 Repeat Stage
   - Repeat Counter
@@ -32,7 +39,7 @@ Repeat Stage
   - Replicard Expedition redirect (instead of support summon)
 ```
 
-## How to use
+## How to Install
 
 1. Download latest release version [here](https://github.com/aaron-xheres/grantools-extension/releases)
 2. Extract ZIP file
@@ -41,6 +48,7 @@ Repeat Stage
 5. Select unzipped Folder
 
 **Remember to pin the extension for easy access!**
+
 
 ## Updating
 
@@ -51,3 +59,27 @@ Repeat Stage
 5. Click on Update
 
 **If there is any issue with updating the extension, remove and do a clean 'Load Unpacked' again**
+
+
+## How to Use
+
+1. Navigate to [Granblue Fantasy](http://game.granbluefantasy.jp)
+2. Open the extension pop-up (click on the extension icon)
+3. Click on Attach Debugger
+4. A notice will appear on your chrome (every chrome window/tabs) that says "Grantools" started debugging this browser
+
+Once the notice appears, this means that the extension is now reading data from Granblue Fantasy
+
+```
+- Refresh Icon: Auto Refresh
+- Repeat Icon: Repeat Stage
+
+Auto Refresh Settings
+  - On Attack
+  - On Summon
+  
+Repeat Stage Settings
+  - Replicard Expedition
+    - This sends player to the last selected replicard expeidition map instead of repeating the stage
+      (only for Replicard Sandbox)
+```
