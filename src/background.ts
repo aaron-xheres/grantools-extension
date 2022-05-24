@@ -199,28 +199,16 @@ const execAction = async (dataType: string): Promise<void> => {
       ) {
         console.log('[ACTION] Auto Refresh');
 
-        let url = tab[0].url as string;
         let waitDelay = 1000;
-        if (url.includes('_multi')) waitDelay = 250;
+        if (tab[0].url!.includes('_multi')) waitDelay = 250;
 
         await wait(100);
-        chrome.scripting.executeScript({
-          target: {tabId: tab[0].id!},
-          func: async () => {
-            history.back();
-          },
-        });
+        chrome.tabs.goBack(tab[0].id!);
 
         await wait(waitDelay);
-        while (!url.includes('#raid')) {
+        while (!tab[0].url!.includes('#raid')) {
+          chrome.tabs.goForward(tab[0].id!);
           await wait(250);
-          url = tab[0].url as string;
-          chrome.scripting.executeScript({
-            target: {tabId: tab[0].id!},
-            func: async () => {
-              history.forward();
-            },
-          });
         }
       }
     }

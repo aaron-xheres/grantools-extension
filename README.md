@@ -2,12 +2,11 @@
 
 QOL Tools for Granblue Fantasy built on Electron
 
-
 ## Disclaimer
 
 ```
 This extension will only READ data from Granblue Fantasy.
-Any controls is done only on the browser and not the game.
+ALL functions is done only on the tab itself and not the game (nor its contents)
 
 
 That being said...
@@ -20,6 +19,7 @@ The developers are not liable for any damages caused to your account
 ```
 
 ## Features
+
 ```
 Auto Refresh
   * Works with multi-battle raids
@@ -32,7 +32,6 @@ Repeat Stage
   - Replicard Expedition redirect (instead of support summon)
 ```
 
-
 ## How to use
 
 1. Download latest release version [here](https://github.com/aaron-xheres/grantools-extension/releases)
@@ -42,7 +41,6 @@ Repeat Stage
 5. Select unzipped Folder
 
 **Remember to pin the extension for easy access!**
-
 
 ## Updating
 
