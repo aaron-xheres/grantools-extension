@@ -44,7 +44,10 @@ Repeat Stage
 
 ## Updating
 
-1. Extract ZIP file
-2. Repleace old extension folder with extracted files
-3. Open chrome extension page (chrome://extensions)
-4. Click on Update
+1. Download latest release version [here](https://github.com/aaron-xheres/grantools-extension/releases)
+2. Extract ZIP file
+3. Repleace old extension folder with extracted files
+4. Open chrome extension page (chrome://extensions)
+5. Click on Update
+
+**If there is any issue with updating the extension, remove and do a clean 'Load Unpacked' again**
