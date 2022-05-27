@@ -98,13 +98,18 @@ export default defineComponent({
   methods: {
     resetStores,
     toggleRefreshAttack(value: boolean) {
-      setStore(CONST.STORE_DATA.refreshAttack, value, true);
+      setStore(CONST.STORES.DATA, CONST.STORE_DATA.refreshAttack, value, true);
     },
     toggleRefreshSummon(value: boolean) {
-      setStore(CONST.STORE_DATA.refreshSummon, value, true);
+      setStore(CONST.STORES.DATA, CONST.STORE_DATA.refreshSummon, value, true);
     },
     toggleReplicardExpedition(value: boolean) {
-      setStore(CONST.STORE_DATA.replicardExpedition, value, true);
+      setStore(
+          CONST.STORES.DATA,
+          CONST.STORE_DATA.replicardExpedition,
+          value,
+          true,
+      );
     },
   },
 });

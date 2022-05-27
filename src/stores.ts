@@ -3,12 +3,12 @@ import {reactive} from 'vue';
 import * as CONST from '@/const';
 import localStorage from '@/localStorage';
 
-export const actionStore = reactive({
+export const actionStore: { [key: string]: any } = reactive({
   autoRefresh: false,
   repeatStage: false,
 });
 
-export const dataStore = reactive({
+export const dataStore: { [key: string]: any } = reactive({
   currentPageType: CONST.PAGE_TYPE.NULL,
   refreshAttack: true,
   refreshSummon: false,
@@ -29,101 +29,53 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab): void => {
 
 export const syncStore = async (): Promise<any> => {
   const storage = await localStorage.getAllData();
+  if (!storage) return;
 
-  actionStore.autoRefresh = storage.autoRefresh;
-  actionStore.repeatStage = storage.repeatStage;
+  actionStore.autoRefresh = storage[CONST.STORE_ACTIONS.autoRefresh];
+  actionStore.repeatStage = storage[CONST.STORE_ACTIONS.repeatStage];
 
-  dataStore.currentPageType = storage.currentPageType;
-  dataStore.refreshAttack = storage.refreshAttack;
-  dataStore.refreshSummon = storage.refreshSummon;
-  dataStore.replicardExpedition = storage.replicardExpedition;
-  dataStore.lastSelectedStage = storage.lastSelectedStage;
-  dataStore.repeatStageCounter = storage.repeatStageCounter;
+  dataStore.currentPageType = storage[CONST.STORE_DATA.currentPageType];
+  dataStore.refreshAttack = storage[CONST.STORE_DATA.refreshAttack];
+  dataStore.refreshSummon = storage[CONST.STORE_DATA.refreshSummon];
+  dataStore.replicardExpedition = storage[CONST.STORE_DATA.replicardExpedition];
+  dataStore.lastSelectedStage = storage[CONST.STORE_DATA.lastSelectedStage];
+  dataStore.repeatStageCounter = storage[CONST.STORE_DATA.repeatStageCounter];
 };
 
-syncStore();
 export const setStore = async (
+    storeKey: string,
     dataKey: string,
     dataValue: any,
     log?: boolean,
 ): Promise<void> => {
-  switch (dataKey) {
-    case CONST.STORE_ACTIONS.autoRefresh:
-      actionStore.autoRefresh = dataValue;
-      await localStorage.setData(
-          CONST.STORE_ACTIONS.autoRefresh,
-          dataValue,
-          log,
-      );
+  await localStorage.setData(dataKey, dataValue, log);
+
+  switch (storeKey) {
+    case CONST.STORES.ACTIONS:
+      actionStore[dataKey] = dataValue;
       break;
-    case CONST.STORE_ACTIONS.repeatStage:
-      actionStore.repeatStage = dataValue;
-      await localStorage.setData(
-          CONST.STORE_ACTIONS.repeatStage,
-          dataValue,
-          log,
-      );
+    case CONST.STORES.DATA:
+      dataStore[dataKey] = dataValue;
       break;
-    case CONST.STORE_DATA.currentPageType:
-      dataStore.currentPageType = dataValue;
-      await localStorage.setData(
-          CONST.STORE_DATA.currentPageType,
-          dataValue,
-          log,
-      );
-      break;
-    case CONST.STORE_DATA.refreshAttack:
-      dataStore.refreshAttack = dataValue;
-      await localStorage.setData(
-          CONST.STORE_DATA.refreshAttack,
-          dataValue,
-          log,
-      );
-      break;
-    case CONST.STORE_DATA.refreshSummon:
-      dataStore.refreshSummon = dataValue;
-      await localStorage.setData(
-          CONST.STORE_DATA.refreshSummon,
-          dataValue,
-          log,
-      );
-      break;
-    case CONST.STORE_DATA.replicardExpedition:
-      dataStore.replicardExpedition = dataValue;
-      await localStorage.setData(
-          CONST.STORE_DATA.replicardExpedition,
-          dataValue,
-          log,
-      );
-      break;
-    case CONST.STORE_DATA.lastSelectedStage:
-      dataStore.lastSelectedStage = dataValue;
-      await localStorage.setData(
-          CONST.STORE_DATA.lastSelectedStage,
-          dataValue,
-          log,
-      );
-      break;
-    case CONST.STORE_DATA.repeatStageCounter:
-      dataStore.repeatStageCounter = dataValue;
-      await localStorage.setData(
-          CONST.STORE_DATA.repeatStageCounter,
-          dataValue,
-          log,
-      );
+    default:
       break;
   }
-
-  syncStore();
 };
 
 export const resetStores = async (): Promise<void> => {
-  setStore(CONST.STORE_ACTIONS.autoRefresh, false);
-  setStore(CONST.STORE_ACTIONS.repeatStage, false);
-  setStore(CONST.STORE_DATA.currentPageType, CONST.PAGE_TYPE.NULL);
-  setStore(CONST.STORE_DATA.refreshAttack, true);
-  setStore(CONST.STORE_DATA.refreshSummon, false);
-  setStore(CONST.STORE_DATA.lastSelectedStage, '');
-  setStore(CONST.STORE_DATA.repeatStageCounter, 0);
+  await setStore(CONST.STORES.ACTIONS, CONST.STORE_ACTIONS.autoRefresh, false);
+  await setStore(CONST.STORES.ACTIONS, CONST.STORE_ACTIONS.repeatStage, false);
+  await setStore(
+      CONST.STORES.DATA,
+      CONST.STORE_DATA.currentPageType,
+      CONST.PAGE_TYPE.NULL,
+  );
+  await setStore(CONST.STORES.DATA, CONST.STORE_DATA.refreshAttack, true);
+  await setStore(CONST.STORES.DATA, CONST.STORE_DATA.refreshSummon, false);
+  await setStore(CONST.STORES.DATA, CONST.STORE_DATA.lastSelectedStage, '');
+  await setStore(CONST.STORES.DATA, CONST.STORE_DATA.repeatStageCounter, 0);
   console.warn('[STORES] RESET STORE');
 };
+
+// Ensure that the stores are synced on popup
+syncStore();

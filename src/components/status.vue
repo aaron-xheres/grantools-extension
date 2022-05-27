@@ -1,7 +1,7 @@
 <!-- TEMPLATE -->
 <template>
   <n-card>
-    <n-button @click="attachDebugger">Attach Debugger</n-button>
+    <n-button @click="logStorage">Log Storage</n-button>
   </n-card>
 </template>
 <!-- TEMPLATE -->
@@ -11,6 +11,8 @@
 import {defineComponent} from 'vue';
 import {NButton, NCard} from 'naive-ui';
 
+import localStorage from '@/localStorage';
+
 export default defineComponent({
   name: 'StatusComponent',
   components: {
@@ -18,8 +20,8 @@ export default defineComponent({
     NCard,
   },
   methods: {
-    attachDebugger: (): void => {
-      chrome.runtime.sendMessage({msg: 'attachDebugger'});
+    logStorage: async () => {
+      console.log('[LOG STORAGE]', await localStorage.getAllData());
     },
   },
 });

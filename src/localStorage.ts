@@ -13,7 +13,7 @@ export class localStorage {
       return data;
     }
     else {
-      console.error('[LOCAL STORAGE] Storage Key does not exist:', dataKey);
+      console.error('[LOCAL STORAGE] No Storage Data found:', dataKey);
       return null;
     }
   }
@@ -30,14 +30,9 @@ export class localStorage {
       log?: boolean,
   ): Promise<void> {
     chrome.storage.sync.set({[dataKey]: dataValue});
+
     if (log) {
-      console.log(
-          '[LOCAL STORAGE] Storage:',
-          ' |  Data Set:',
-          dataKey,
-          ': ',
-          dataValue,
-      );
+      console.log('[LOCAL STORAGE] Set -', `${dataKey}:`, dataValue);
     }
   }
 
