@@ -35,14 +35,13 @@ const initWebRequestReader = async (): Promise<void> => {
     ],
   };
 
-  chrome.webRequest.onCompleted.addListener(
+  chrome.webRequest.onHeadersReceived.addListener(
       (details: Record<string, any>): void => {
         console.log('[WEB REQUEST URL]', details.url);
         const dataType: string = details.url.includes('.json?') ?
         details.url.split('/').pop().split('.').shift() :
         'reward';
 
-        console.warn(dataType);
         execAction(dataType);
       },
       filter,
