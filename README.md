@@ -20,7 +20,7 @@ The developers are not liable for any damages caused to your account
 
 ## Todo / Ideas
 ```
-[] Use WebRequests instead of Debugger?
+[x] Use WebRequests instead of Debugger?
    - Since I only need to read the sending header
 ```
 
@@ -65,10 +65,9 @@ Repeat Stage
 
 1. Navigate to [Granblue Fantasy](http://game.granbluefantasy.jp)
 2. Open the extension pop-up (click on the extension icon)
-3. Click on Attach Debugger
-4. A notice will appear on your chrome (every chrome window/tabs) that says "Grantools" started debugging this browser
+3. Select the options and settings and it should automatically work
 
-Once the notice appears, this means that the extension is now reading data from Granblue Fantasy
+* Note that the extension may sometimes not work properly (e.g. attacks/summons not refreshing)
 
 ```
 - Refresh Icon: Auto Refresh
