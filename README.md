@@ -1,6 +1,6 @@
 # Grantools (Pre-release)
 
-QOL Tools for Granblue Fantasy built on Electron
+QOL Tools for Granblue Fantasy - Chrome Extension
 
 ## Disclaimer
 
