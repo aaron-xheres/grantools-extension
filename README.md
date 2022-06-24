@@ -29,6 +29,7 @@ System Additions/Changes
 
 ---
 Function Additions/Changes
+
 [] Optimize Back->Forward for Auto Refresh
   - Auto Refresh sometimes put user on READY screen, possibly due to network?
 [] Play Sound on stage Repeat (+ Option)
