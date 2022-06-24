@@ -76,8 +76,6 @@ Repeat Stage
 2. Open the extension pop-up (click on the extension icon)
 3. Select the options and settings and it should automatically work
 
-- Note that the extension may sometimes not work properly (e.g. attacks/summons not refreshing)
-
 ```
 - Refresh Icon: Auto Refresh
 - Repeat Icon: Repeat Stage
