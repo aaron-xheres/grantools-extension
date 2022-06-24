@@ -26,8 +26,9 @@ System Additions/Changes
 [x] Use WebRequests instead of Debugger?
 [] Move entirety of extension to run off cached files downloaded using Service Worker
   - Allows updating of extension without the use of Chrome Extension Update
+```
 
----
+```
 Function Additions/Changes
 
 [] Optimize Back->Forward for Auto Refresh
