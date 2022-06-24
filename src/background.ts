@@ -20,9 +20,9 @@ const initStores = async (): Promise<void> => {
 
 let tab: chrome.tabs.Tab[];
 const initTabs = async (): Promise<void> => {
+  // Fix: Do not include active and currentWindow
+  // This will enable user to use other chrome window/tabs when using Grantools
   tab = await chrome.tabs.query({
-    active: true,
-    currentWindow: true,
     url: 'http://game.granbluefantasy.jp/*',
   });
 };
@@ -214,6 +214,22 @@ const execAction = async (dataType: string): Promise<void> => {
 
   // Attack / Summon
   if (dataType.includes('_result')) {
+    // Ensure that only the raid tab is refreshed
+    // TODO: Fix refreshing when having multiple raid tabs and alt-tabbed
+    // Current Workaround: If there are multiple raid tabs, refresh the active tab, else tab[0]
+    const filterTab = tab.filter((tab: chrome.tabs.Tab) =>
+      tab.url?.includes('#raid'),
+    );
+    let activeFilter;
+    if (filterTab.length > 1) {
+      activeFilter = filterTab.filter(
+          (tab: chrome.tabs.Tab) => tab.active === true,
+      );
+    }
+
+    const actionTab =
+      activeFilter && activeFilter.length > 0 ? activeFilter[0] : filterTab[0];
+
     if (actionStore.autoRefresh) {
       if (
         (dataStore.refreshAttack &&
@@ -224,14 +240,14 @@ const execAction = async (dataType: string): Promise<void> => {
 
         // Single raid don't need to forward
         let waitDelay = 5000;
-        if (tab[0].url!.includes('_multi')) waitDelay = 250;
+        if (actionTab.url?.includes('_multi')) waitDelay = 250;
 
         await wait(100);
-        chrome.tabs.goBack(tab[0].id!);
+        chrome.tabs.goBack(actionTab.id!);
 
-        while (!tab[0].url!.includes('#raid')) {
+        while (!actionTab.url?.includes('#raid')) {
           await wait(waitDelay);
-          chrome.tabs.goForward(tab[0].id!);
+          chrome.tabs.goForward(actionTab.id!);
         }
       }
     }
@@ -239,6 +255,12 @@ const execAction = async (dataType: string): Promise<void> => {
 
   // Reward Screen
   else if (dataType === 'reward') {
+    // Ensure that only the reward tab is refreshed
+    // Will refresh all result tabs, needs suggestion for if that should be the case
+    const filterTab = tab.filter((tab: chrome.tabs.Tab) =>
+      tab.url?.includes('#result'),
+    );
+
     if (actionStore.repeatStage && dataStore.lastSelectedStage !== '') {
       console.log('[ACTION] Repeat Stage');
       setStore(
@@ -247,7 +269,9 @@ const execAction = async (dataType: string): Promise<void> => {
           dataStore.repeatStageCounter + 1,
           true,
       );
-      chrome.tabs.update(tab[0].id!, {url: dataStore.lastSelectedStage});
+      for (const actionTab of filterTab) {
+        chrome.tabs.update(actionTab.id!, {url: dataStore.lastSelectedStage});
+      }
     }
   }
 };
