@@ -26,10 +26,16 @@ System Additions/Changes
 [x] Use WebRequests instead of Debugger?
 [] Move entirety of extension to run off cached files downloaded using Service Worker
   - Allows updating of extension without the use of Chrome Extension Update
+```
 
----
+```
 Function Additions/Changes
+<<<<<<< HEAD
 [?] Optimize Back->Forward for Auto Refresh
+=======
+
+[] Optimize Back->Forward for Auto Refresh
+>>>>>>> cc44563d5b8f0f7ac9184959ce0c19fb0e1a7776
   - Auto Refresh sometimes put user on READY screen, possibly due to network?
 [] Play Sound on stage Repeat (+ Option)
 ```
@@ -73,8 +79,6 @@ Repeat Stage
 1. Navigate to [Granblue Fantasy](http://game.granbluefantasy.jp)
 2. Open the extension pop-up (click on the extension icon)
 3. Select the options and settings and it should automatically work
-
-- Note that the extension may sometimes not work properly (e.g. attacks/summons not refreshing)
 
 ```
 - Refresh Icon: Auto Refresh
