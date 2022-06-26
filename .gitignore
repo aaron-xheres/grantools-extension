@@ -4,3 +4,4 @@ extension/manifest.json
 extension/dist
 .DS_Store
 .env
+*.zip

@@ -29,7 +29,7 @@ System Additions/Changes
 
 ---
 Function Additions/Changes
-[] Optimize Back->Forward for Auto Refresh
+[?] Optimize Back->Forward for Auto Refresh
   - Auto Refresh sometimes put user on READY screen, possibly due to network?
 [] Play Sound on stage Repeat (+ Option)
 ```
@@ -89,3 +89,11 @@ Repeat Stage Settings
     - This sends player to the last selected replicard expeidition map instead of repeating the stage
       (only for Replicard Sandbox)
 ```
+
+---
+
+## FAQ
+
+1. Auto Refresh sometimes does not refresh while in raid
+   > This is a known issue. For now, the work-around is to manually refresh the raid once and it should work again  
+   > If the issue persist after manually reloading the raid (serveral times), try reseting the settings or restart the extension

@@ -8,6 +8,11 @@ import {
   syncStore,
 } from './stores';
 
+// Background Variables
+const autoRefreshVar: Record<string, any> = {
+  forwardCommand: [],
+};
+
 const initStores = async (): Promise<void> => {
   const storage = await localStorage.getAllData();
   if (Object.keys(storage).length === 0) {
@@ -38,6 +43,7 @@ const initWebRequestReader = async (): Promise<void> => {
   chrome.webRequest.onHeadersReceived.addListener(
       (details: Record<string, any>): void => {
         console.log('[WEB REQUEST URL]', details.url);
+
         const dataType: string = details.url.includes('.json?') ?
         details.url.split('/').pop().split('.').shift() :
         'reward';
@@ -54,6 +60,17 @@ const initNavigation = async (): Promise<void> => {
       changeInfo.url &&
       changeInfo.url.includes('http://game.granbluefantasy.jp/')
     ) {
+      if (changeInfo.status === 'complete') {
+        // Auto Refresh Forward
+        if (autoRefreshVar.forwardCommand.length > 0) {
+          for (const _tabId of autoRefreshVar.forwardCommand) {
+            chrome.tabs.goForward(_tabId);
+          }
+
+          autoRefreshVar.forwardCommand = [];
+        }
+      }
+
       // Home Page
       if (
         changeInfo.url.includes('#mypage') &&
@@ -236,18 +253,30 @@ const execAction = async (dataType: string): Promise<void> => {
           dataType.includes('normal_attack_result')) ||
         (dataStore.refreshSummon && dataType.includes('summon_result'))
       ) {
-        console.log('[ACTION] Auto Refresh');
+        if (actionTab.id) {
+          console.log('[ACTION] Auto Refresh');
 
-        // Single raid don't need to forward
-        let waitDelay = 5000;
-        if (actionTab.url?.includes('_multi')) waitDelay = 250;
+          await wait(100);
+          if (actionTab.url?.includes('_multi')) {
+            // ISSUE: May get stuck on READY on refresh/first Auto Refresh for multi-raids
+            /*
+            autoRefreshVar.forwardCommand.push(actionTab.id);
+            await wait(100);
+            chrome.tabs.goBack(actionTab.id!);
+            */
 
-        await wait(100);
-        chrome.tabs.goBack(actionTab.id!);
-
-        while (!actionTab.url?.includes('#raid')) {
-          await wait(waitDelay);
-          chrome.tabs.goForward(actionTab.id!);
+            // WORKAROUND: Use Refresh for Multi Raid temporarily
+            chrome.tabs.reload(actionTab.id);
+          }
+          else {
+            // NOTE: Single Raids will automatically redirect back to raid
+            chrome.tabs.goBack(actionTab.id!);
+          }
+        }
+        else {
+          console.error(
+              '[ACTION] Failed to Auto Refresh: Unable to find Tab ID',
+          );
         }
       }
     }

@@ -8,11 +8,11 @@
       justify-content="space-evenly"
     >
       <n-tab-pane name="SETTINGS">
-        <h3 class="settingsCategory">Auto Refresh</h3>
-        <n-card class="settingsCard" content-style="padding: 5px;">
+        <h3 class="innerCategory">Auto Refresh</h3>
+        <n-card class="innerCard" content-style="padding: 5px;">
           <table>
             <tr>
-              <td><h4 class="switchTitle">Attack</h4></td>
+              <td><h4 class="innerCardSwitchTitle">Attack</h4></td>
               <td>
                 <n-switch
                   v-model:value="dataStore.refreshAttack"
@@ -22,7 +22,7 @@
               </td>
             </tr>
             <tr>
-              <td><h4 class="switchTitle">Summon</h4></td>
+              <td><h4 class="innerCardSwitchTitle">Summon</h4></td>
               <td>
                 <n-switch
                   v-model:value="dataStore.refreshSummon"
@@ -34,14 +34,14 @@
           </table>
         </n-card>
         <br style="margin-top: 10px; content: ' '" />
-        <h3 class="settingsCategory">Repeat Stage</h3>
-        <n-card class="settingsCard" content-style="padding: 5px;">
+        <h3 class="innerCategory">Repeat Stage</h3>
+        <n-card class="innerCard" content-style="padding: 5px;">
           <table>
             <tr>
               <td>
                 <n-tooltip trigger="hover" style="max-width: 200px">
                   <template #trigger>
-                    <h4 class="switchTitle">Replicard Expedition</h4>
+                    <h4 class="innerCardSwitchTitle">Replicard Expedition</h4>
                   </template>
                   Please ensure that this setting is turned ON before entering
                   the expedition page. <br /><br />
@@ -61,10 +61,25 @@
           </table>
         </n-card>
       </n-tab-pane>
+
       <n-tab-pane name="RESET">
-        <n-button @click="resetStores" class="btnReset"
+        <br style="margin-top: 10px; content: ' '" />
+        <n-button @click="resetStores" class="innerBtn"
           >RESET SETTINGS DATA</n-button
         >
+      </n-tab-pane>
+
+      <n-tab-pane name="INFO">
+        <h3 class="innerCategory">DEVELOPERS</h3>
+        <n-card class="innerCard">
+          <n-button @click="openTab('https://github.com/aaron-xheres')"
+            >Aaron 'XhERES' Tan</n-button
+          >
+        </n-card>
+        <br style="margin-top: 10px; content: ' '" />
+        <h3 class="innerCategory">DEBUG</h3>
+        <br style="margin-top: 10px; content: ' '" />
+        <n-button @click="logStorage" class="innerBtn">Log Storage</n-button>
       </n-tab-pane>
     </n-tabs>
   </n-card>
@@ -77,6 +92,7 @@ import {defineComponent} from 'vue';
 import {NButton, NCard, NSwitch, NTabs, NTabPane, NTooltip} from 'naive-ui';
 
 import * as CONST from '@/const';
+import localStorage from '@/localStorage';
 import {actionStore, dataStore, setStore, resetStores} from '@/stores';
 
 export default defineComponent({
@@ -111,6 +127,14 @@ export default defineComponent({
           true,
       );
     },
+
+    openTab: async (link: string): Promise<void> => {
+      window.open(link, '_blank');
+    },
+
+    logStorage: async (): Promise<void> => {
+      console.log('[LOG STORAGE]', await localStorage.getAllData());
+    },
   },
 });
 </script>
@@ -118,23 +142,21 @@ export default defineComponent({
 
 <!-- STYLE -->
 <style scoped>
-.settingsCategory {
+.innerCategory {
   margin: 0px;
+  padding: 5px;
 }
-.settingsCard {
+.innerBtn {
+  margin-bottom: 15px;
+}
+.innerCard {
   width: 268px;
   padding: 0px;
 }
-.setting {
-  margin: 2px;
-}
-.switchTitle {
+.innerCardSwitchTitle {
   float: left;
   margin: 0px;
   margin-right: 10px;
-}
-.btnReset {
-  margin-bottom: 15px;
 }
 .n-tab-pane {
   width: 284px;

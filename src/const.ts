@@ -1,3 +1,10 @@
+export const UI = {
+  VERSION: {
+    RELEASE: 'Pre-release ',
+    NUMBER: '0.0.8',
+  },
+};
+
 export const STORES = {
   ACTIONS: 'actionsStore',
   DATA: 'dataStore',

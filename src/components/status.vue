@@ -1,7 +1,10 @@
 <!-- TEMPLATE -->
 <template>
   <n-card>
-    <n-button @click="logStorage">Log Storage</n-button>
+    <h3 style="margin-bottom: 0px; margin-top: 0px">GRANTOOLS EXTENSION</h3>
+    <div style="text-align: center; font-size: smaller">
+      {{ `${UI.VERSION.RELEASE}v${UI.VERSION.NUMBER}` }}
+    </div>
   </n-card>
 </template>
 <!-- TEMPLATE -->
@@ -9,21 +12,21 @@
 <!-- SCRIPT -->
 <script lang="ts">
 import {defineComponent} from 'vue';
-import {NButton, NCard} from 'naive-ui';
+import {NCard} from 'naive-ui';
 
-import localStorage from '@/localStorage';
+import {UI} from '@/const';
 
 export default defineComponent({
   name: 'StatusComponent',
   components: {
-    NButton,
     NCard,
   },
-  methods: {
-    logStorage: async () => {
-      console.log('[LOG STORAGE]', await localStorage.getAllData());
-    },
+  data() {
+    return {
+      UI,
+    };
   },
+  methods: {},
 });
 </script>
 <!-- SCRIPT -->

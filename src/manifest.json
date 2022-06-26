@@ -1,7 +1,7 @@
 {
   "name": "Grantools",
   "description": "QOL Tool for Granblue Fantasy",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "manifest_version": 3,
   "action": {
     "default_icon": {
