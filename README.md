@@ -30,12 +30,7 @@ System Additions/Changes
 
 ```
 Function Additions/Changes
-<<<<<<< HEAD
 [?] Optimize Back->Forward for Auto Refresh
-=======
-
-[] Optimize Back->Forward for Auto Refresh
->>>>>>> cc44563d5b8f0f7ac9184959ce0c19fb0e1a7776
   - Auto Refresh sometimes put user on READY screen, possibly due to network?
 [] Play Sound on stage Repeat (+ Option)
 ```
