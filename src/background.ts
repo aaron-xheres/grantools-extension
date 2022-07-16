@@ -1,6 +1,7 @@
 import * as CONST from '@/const';
 import localStorage from '@/localStorage';
 import {
+  tabStatus,
   actionStore,
   dataStore,
   resetStores,
@@ -25,11 +26,24 @@ const initStores = async (): Promise<void> => {
 
 let tab: chrome.tabs.Tab[];
 const initTabs = async (): Promise<void> => {
-  // Fix: Do not include active and currentWindow
-  // This will enable user to use other chrome window/tabs when using Grantools
+  tabStatus.value = 'Looking For Tab...';
   tab = await chrome.tabs.query({
     url: 'http://game.granbluefantasy.jp/*',
   });
+
+  if (tab.length <= 0) {
+    tab = await chrome.tabs.query({
+      url: 'https://game.granbluefantasy.jp/*',
+    });
+  }
+
+  if (tab.length <= 0) {
+    tabStatus.value = 'Unable to find Tab';
+    return;
+  }
+
+  console.log('[TAB]', tab);
+  tabStatus.value = '';
 };
 
 const initWebRequestReader = async (): Promise<void> => {
@@ -37,6 +51,8 @@ const initWebRequestReader = async (): Promise<void> => {
     urls: [
       'http://game.granbluefantasy.jp/rest/*/*_result.json?*',
       'http://game.granbluefantasy.jp/result*/data/*',
+      'https://game.granbluefantasy.jp/rest/*/*_result.json?*',
+      'https://game.granbluefantasy.jp/result*/data/*',
     ],
   };
 
@@ -55,10 +71,15 @@ const initWebRequestReader = async (): Promise<void> => {
 };
 
 const initNavigation = async (): Promise<void> => {
+  if (tab === undefined) {
+    await initTabs();
+  }
+
   chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab): void => {
     if (
       changeInfo.url &&
-      changeInfo.url.includes('http://game.granbluefantasy.jp/')
+      (changeInfo.url.includes('http://game.granbluefantasy.jp/') ||
+        changeInfo.url.includes('https://game.granbluefantasy.jp/'))
     ) {
       if (changeInfo.status === 'complete') {
         // Auto Refresh Forward
@@ -229,6 +250,10 @@ const execAction = async (dataType: string): Promise<void> => {
   await syncStore();
   await initTabs();
 
+  if (tab === undefined) {
+    await initTabs();
+  }
+
   // Attack / Summon
   if (dataType.includes('_result')) {
     // Ensure that only the raid tab is refreshed
@@ -246,6 +271,7 @@ const execAction = async (dataType: string): Promise<void> => {
 
     const actionTab =
       activeFilter && activeFilter.length > 0 ? activeFilter[0] : filterTab[0];
+    console.log(tab);
 
     if (actionStore.autoRefresh) {
       if (

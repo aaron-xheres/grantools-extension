@@ -1,7 +1,9 @@
-import {reactive} from 'vue';
+import {reactive, ref} from 'vue';
 
 import * as CONST from '@/const';
 import localStorage from '@/localStorage';
+
+export const tabStatus = ref('');
 
 export const actionStore: { [key: string]: any } = reactive({
   autoRefresh: false,

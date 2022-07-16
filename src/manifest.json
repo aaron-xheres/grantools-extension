@@ -1,7 +1,7 @@
 {
   "name": "Grantools",
   "description": "QOL Tool for Granblue Fantasy",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "manifest_version": 3,
   "action": {
     "default_icon": {
@@ -23,12 +23,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://game.granbluefantasy.jp/*"],
+      "matches": ["http://game.granbluefantasy.jp/*", "https://game.granbluefantasy.jp/*"],
       "run_at": "document_end",
       "js": ["content-scripts/main.ts"]
     }
   ],
-  "host_permissions": ["http://game.granbluefantasy.jp/*"],
+  "host_permissions": ["http://game.granbluefantasy.jp/*", "https://game.granbluefantasy.jp/*"],
   "permissions": [
     "background",
     "clipboardRead",

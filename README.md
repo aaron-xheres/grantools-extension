@@ -23,6 +23,7 @@ The developers are not liable for any damages caused to your account
 ```
 System Additions/Changes
 
+[x] HTTPS Support
 [x] Use WebRequests instead of Debugger?
 [] Move entirety of extension to run off cached files downloaded using Service Worker
   - Allows updating of extension without the use of Chrome Extension Update
