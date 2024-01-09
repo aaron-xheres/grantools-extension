@@ -1,7 +1,7 @@
 {
   "name": "Grantools",
   "description": "QOL Tool for Granblue Fantasy",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "manifest_version": 3,
   "action": {
     "default_icon": {
@@ -30,7 +30,6 @@
   ],
   "host_permissions": ["http://game.granbluefantasy.jp/*", "https://game.granbluefantasy.jp/*"],
   "permissions": [
-    "background",
     "clipboardRead",
     "debugger",
     "scripting",

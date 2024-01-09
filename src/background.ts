@@ -50,9 +50,9 @@ const initWebRequestReader = async (): Promise<void> => {
   const filter = {
     urls: [
       'http://game.granbluefantasy.jp/rest/*/*_result.json?*',
-      'http://game.granbluefantasy.jp/result*/data/*',
+      'http://game.granbluefantasy.jp/result*/*',
       'https://game.granbluefantasy.jp/rest/*/*_result.json?*',
-      'https://game.granbluefantasy.jp/result*/data/*',
+      'https://game.granbluefantasy.jp/result*/*',
     ],
   };
 
