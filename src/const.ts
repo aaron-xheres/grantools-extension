@@ -1,7 +1,8 @@
 export const UI = {
   VERSION: {
     RELEASE: 'Pre-release ',
-    NUMBER: '0.0.9',
+    NUMBER: '0.0.10',
+    VERSION_CHECK: 10,
   },
 };
 

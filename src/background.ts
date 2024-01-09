@@ -1,6 +1,7 @@
 import * as CONST from '@/const';
 import localStorage from '@/localStorage';
 import {
+  newUpdate,
   tabStatus,
   actionStore,
   dataStore,
@@ -15,6 +16,17 @@ const autoRefreshVar: Record<string, any> = {
 };
 
 const initStores = async (): Promise<void> => {
+  const repoVersionReq = await fetch(
+      'https://raw.githubusercontent.com/aaron-xheres/grantools-extension/main/version',
+  );
+  const repoVersion = await repoVersionReq.text();
+  const parsedVersion = parseInt(repoVersion.replaceAll('\n', ''));
+
+  if (CONST.UI.VERSION.VERSION_CHECK < parsedVersion) {
+    console.log('new update!');
+    newUpdate.value = true;
+  }
+
   const storage = await localStorage.getAllData();
   if (Object.keys(storage).length === 0) {
     resetStores();

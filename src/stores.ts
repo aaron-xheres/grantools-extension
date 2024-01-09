@@ -3,6 +3,7 @@ import {reactive, ref} from 'vue';
 import * as CONST from '@/const';
 import localStorage from '@/localStorage';
 
+export const newUpdate = ref(false);
 export const tabStatus = ref('');
 
 export const actionStore: { [key: string]: any } = reactive({
